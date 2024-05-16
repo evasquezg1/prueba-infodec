@@ -54,7 +54,7 @@
                         <div class="form-group">
                             <label>Presupuesto</label>
                             <input type="text" class="form-control" formControlName="budget">
-                            <span class="error-text" *ngIf="hasErrorsFieldForm('budget')">Campo obligatorio</span>
+                            <span class="error-text" *ngIf="screenOne.controls['budget'].hasError('pattern')">Solo números</span>
                         </div>
                     </div>
                     <div class="col-lg-6">

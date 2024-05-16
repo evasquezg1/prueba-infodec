@@ -56,7 +56,7 @@ export class Screen1Component implements OnInit{
     if(this.screenOne.valid){
       this.activeScreen = 'screen_two';
 
-      this.screenOne.controls['budget'].setValidators(Validators.required);
+      this.screenOne.controls['budget'].setValidators(Validators.compose([Validators.required, Validators.pattern(/^-?(0|[1-9]\d*)?$/)]));
       this.screenOne.controls['budget'].updateValueAndValidity();
     }
   }
