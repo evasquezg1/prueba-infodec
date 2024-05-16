@@ -1,1 +1,34 @@
-<p>history works!</p>
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Historial de búsquedas</strong>
+</div>
+
+<div class="card">
+    <div class="card-body" id="screen_one">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>País</th>
+                    <th>Ciudad</th>
+                    <th>Presupuesto COP ($)</th>
+                    <th>Clima</th>
+                    <th>Moneda local</th>
+                    <th>Cambio presupuesto</th>
+                    <th>Tasa de cambio</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(i of history; track $index){
+                    <tr>
+                        <td>{{i?.name_country}}</td>
+                        <td>{{i?.name_city}}</td>
+                        <td>{{i?.budget | currency}}</td>
+                        <td>{{i?.weather}} °C</td>
+                        <td>{{i?.local_currency}} ({{i?.symbol_currency}})</td>
+                        <td>{{i?.budget_local | currency : i?.symbol_currency}}</td>
+                        <td>{{i?.exchange_rate | currency : i?.symbol_currency}}</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

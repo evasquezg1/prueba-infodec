@@ -1,6 +1,18 @@
 <?php
     date_default_timezone_set("America/Bogota");
 
+    function getHistory($req, $res){
+        $connect = Connection::connect();
+        $rt = array();
+
+        //buscar los países en la tabla countries
+        $sql = $connect->prepare("SELECT * FROM history ORDER BY id DESC LIMIT 5");
+        $sql->execute();
+        $rt = $sql->fetchAll();
+
+        return $res->withStatus(200)->write(json_encode($rt));
+    }
+
     function saveHistory($req, $res){
         $connect = Connection::connect();
         $datos = json_decode($req->getBody(), true);

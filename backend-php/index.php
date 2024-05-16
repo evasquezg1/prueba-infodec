@@ -13,6 +13,7 @@
         $app->get('/getCountries', 'getCountries');
         $app->get('/getCities/{countries_id}', 'getCities');
         $app->get('/getContentHtmlExternalPage', 'getContentHtmlExternalPage');
+        $app->get('/getHistory', 'getHistory');
 
         $app->post('/saveHistory', 'saveHistory');
 

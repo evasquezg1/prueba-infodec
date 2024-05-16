@@ -11,6 +11,15 @@ import { catchError } from 'rxjs/operators';
 export class ApiService {
     _http = inject(HttpClient)
 
+    async getHistory(){
+        const url = `${environment.api_url}getHistory`;
+        return lastValueFrom(this._http.get(url))
+            .catch(err => {
+                console.warn(err)
+                return []
+            })  
+    }
+
     async saveHistory(data: any): Promise<any> {
         let url = `${environment.api_url}saveHistory`;
         return this._http.post(url, JSON.stringify(data)).toPromise().then().catch(err => {
