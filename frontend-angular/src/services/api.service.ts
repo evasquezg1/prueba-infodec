@@ -11,6 +11,14 @@ import { catchError } from 'rxjs/operators';
 export class ApiService {
     _http = inject(HttpClient)
 
+    async saveHistory(data: any): Promise<any> {
+        let url = `${environment.api_url}saveHistory`;
+        return this._http.post(url, JSON.stringify(data)).toPromise().then().catch(err => {
+            console.warn(err)
+            return false
+        });
+    }
+
     async getCountries(): Promise<any> {
         const url = `${environment.api_url}getCountries`;
         return lastValueFrom(this._http.get(url))
@@ -37,14 +45,4 @@ export class ApiService {
                 return []
             })  
     }
-
-    /*getCountries(data: any): Observable<any> {
-        let url = `${environment.api_url}getCountries`;
-        return this._http.post(url, data).pipe(
-          catchError((error) => {
-            console.log('Error en el API', error);
-            return throwError('Error en el API');
-          })
-        );
-    }*/
 }

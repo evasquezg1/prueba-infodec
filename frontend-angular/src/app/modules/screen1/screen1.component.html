@@ -15,7 +15,7 @@
                             <select class="form-control" (change)="chooseCountry($event)" formControlName="country">
                                 <option value=""></option>
                                 @for(i of countries; track $index){
-                                    <option value="{{i?.id+'-'+i?.name_country}}">{{i?.name_country}}</option>
+                                    <option value="{{$index}}">{{i?.name_country}}</option>
                                 }
                             </select>
                             <span class="error-text" *ngIf="hasErrorsFieldForm('country')">Campo obligatorio</span>
@@ -67,13 +67,15 @@
             <h5 class="card-title">Hola, {{screenOne.controls['name'].value}}, estos son los datos de tu próximo viaje</h5>
             <div class="row">
                 <div class="col-lg-12">
-                    País: <b>{{countrySelected[1]}}</b><br>
+                    País: <b>{{countries[countrySelected]?.name_country}}</b><br>
                     Ciudad: <b>{{screenOne.controls['city'].value}}</b><br>
-                    Presupuesto COP (Pesos Colombianos): <b>{{screenOne.controls['budget'].value | currency}}</b><br>
+                    Presupuesto COP ($): <b>{{screenOne.controls['budget'].value | currency}}</b><br>
                     Clima: <b>{{weather?.current?.feelslike_c}} °C</b><br>
-                    Moneda local: <b></b><br>
-                    Cambio presupuesto: <b></b><br>
-                    Tasa de cambio: <b></b>
+                    Moneda local: <b>{{countries[countrySelected]?.currency}} ({{countries[countrySelected]?.symbol_currency}})</b><br>
+                    Cambio presupuesto: <b>{{budgetConverter | currency : countries[countrySelected]?.symbol_currency}}</b><br>
+                    Tasa de cambio: <b>{{priceCurrency | currency : countries[countrySelected]?.symbol_currency}}</b><br><br>
+
+                    <a href="/" class="btn btn-outline-danger">Volver al inicio</a>
                 </div>
             </div>
         </div>

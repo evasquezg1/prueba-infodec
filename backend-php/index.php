@@ -11,8 +11,10 @@
     $app->group('/v1', function () use ($app) {
 
         $app->get('/getCountries', 'getCountries');
-        $app->get('/getCountries/{id}', 'getCountries');
         $app->get('/getCities/{countries_id}', 'getCities');
+        $app->get('/getContentHtmlExternalPage', 'getContentHtmlExternalPage');
+
+        $app->post('/saveHistory', 'saveHistory');
 
     })->add(function ($req, $res, $next) {
         $res  = $next($req, $res);

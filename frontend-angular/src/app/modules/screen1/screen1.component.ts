@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { FormService } from '../../../services/form.service';
+import { CurrencyConverterService } from '../../../services/currency.service';
 
 @Component({
   selector: 'app-screen1',
@@ -26,6 +27,9 @@ export class Screen1Component implements OnInit{
 
   activeScreen      : string = "screen_one";
 
+  priceCurrency     : number = 0;
+  budgetConverter   : any;
+
   screenOne : FormGroup = this.fb.group({
     name: new FormControl('', Validators.required),
     country: new FormControl('', Validators.required),
@@ -33,7 +37,7 @@ export class Screen1Component implements OnInit{
     budget: new FormControl('')
   })
 
-  constructor(private apiService: ApiService, private fb: FormBuilder, private formService: FormService){}
+  constructor(private apiService: ApiService, private fb: FormBuilder, private formService: FormService, private currencyConverter: CurrencyConverterService){}
 
   ngOnInit(): void {
     this.init();
@@ -44,8 +48,8 @@ export class Screen1Component implements OnInit{
   }
 
   async chooseCountry(event: any){
-    this.countrySelected = event.target.value.split("-");
-    this.cities = await this.apiService.getCities(this.countrySelected[0]);
+    this.countrySelected = event.target.value;
+    this.cities = await this.apiService.getCities(this.countries[this.countrySelected]?.id);
   }
 
   validateForm(){
@@ -62,7 +66,25 @@ export class Screen1Component implements OnInit{
       this.activeScreen = 'screen_three';
 
       this.weather = await this.apiService.getWeather(this.screenOne.controls['city'].value)
-      console.log(this.weather)
+      this.priceCurrency = await this.currencyConverter.getCurrencyConverter(this.countries[this.countrySelected]?.currency);
+      this.budgetConverter = this.screenOne.controls['budget'].value/this.priceCurrency;
+
+      const { name, country, city, budget } = this.screenOne.getRawValue();
+
+      const data_ = {
+        name,
+        country: this.countries[this.countrySelected]?.name_country,
+        city,
+        budget,
+        weather: this.weather?.current?.feelslike_c,
+        local_currency: this.countries[this.countrySelected]?.currency,
+        symbol_currency: this.countries[this.countrySelected]?.symbol_currency,
+        budget_local: this.budgetConverter,
+        exchange_rate: this.priceCurrency
+      }
+
+      const resp = await this.apiService.saveHistory(data_);
+
     }
   }
 
