@@ -26,7 +26,7 @@ export class CurrencyConverterService {
    * @returns Price Colombian pesos COP by usd
    */
   public async getCurrencyConverter(currency: any):Promise<number>{
-    const urlPage = `https://www.google.com/finance/quote/${currency}-COP?sa=X&ved=2ahUKEwiBpd_lo5L7AhV1VTABHSOsBHgQmY0JegQIBhAc`;
+    const urlPage = `https://www.google.com/finance/quote/${currency}-COP`;
     const {html} = await this.getContentHtmlExternalPage(urlPage);
     
     if (html){
@@ -44,25 +44,5 @@ export class CurrencyConverterService {
 
     return 0;
   }
-
-
-  /*async convertCopToUsdProjects(projects:Project[]):Promise<Project[] | null>{
-    const priceCop = await this.getCopPriceByUsd()
-
-    if (priceCop && projects?.length > 0){
-      if (projects.length > 0){
-        return projects.map( (p) => {
-          if (p?.valor_proyecto){
-            p.dollar_value = Number(p?.valor_proyecto)/priceCop
-            p.dollar_value = Math.trunc(p.dollar_value); // remove decimals
-          }
-          return p;
-        })
-      }
-    }
-
-    return null
-
-  }*/
 
 }
