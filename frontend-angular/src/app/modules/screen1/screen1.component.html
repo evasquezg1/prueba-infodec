@@ -1,0 +1,81 @@
+<div class="card">
+    @if(activeScreen=='screen_one'){
+        <div class="card-body" id="screen_one">
+            <h5 class="card-title">Seleccione destino</h5>
+            <form [formGroup]="screenOne" (ngSubmit)="validateForm()" novalidate>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label>Nombre</label>
+                        <input type="text" class="form-control" formControlName="name">
+                        <span class="error-text" *ngIf="hasErrorsFieldForm('name')">Campo obligatorio</span>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>País</label>
+                            <select class="form-control" (change)="chooseCountry($event)" formControlName="country">
+                                <option value=""></option>
+                                @for(i of countries; track $index){
+                                    <option value="{{i?.id+'-'+i?.name_country}}">{{i?.name_country}}</option>
+                                }
+                            </select>
+                            <span class="error-text" *ngIf="hasErrorsFieldForm('country')">Campo obligatorio</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Ciudad</label>
+                            <select class="form-control" formControlName="city">
+                                <option value=""></option>
+                                @for(i of cities; track $index){
+                                    <option value="{{i?.name_city}}">{{i?.name_city}}</option>
+                                }
+                            </select>
+                            <span class="error-text" *ngIf="hasErrorsFieldForm('city')">Campo obligatorio</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <input type="submit" value="Siguiente" class="btn btn-success" [disabled]="screenOne.invalid">
+                    </div>
+                </div>
+            </form>
+        </div>
+    }
+
+    @if(activeScreen=='screen_two'){
+        <div class="card-body" id="screen_two">
+            <h5 class="card-title">¿Cuánto tienes de presupuesto? Adiciona solo números en COP (Pesos Colombianos)</h5>
+            <form [formGroup]="screenOne" (ngSubmit)="validateFormTwo()" novalidate>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label>Presupuesto</label>
+                            <input type="text" class="form-control" formControlName="budget">
+                            <span class="error-text" *ngIf="hasErrorsFieldForm('budget')">Campo obligatorio</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-outline-primary" (click)="goToBack('screen_one')">Atrás</button>&nbsp;
+                        <input type="submit" value="Siguiente" class="btn btn-success" [disabled]="screenOne.invalid">
+                    </div>
+                </div>
+            </form>
+        </div>
+    }
+
+    @if(activeScreen=='screen_three'){
+        <div class="card-body" id="screen_two">
+            <h5 class="card-title">Hola, {{screenOne.controls['name'].value}}, estos son los datos de tu próximo viaje</h5>
+            <div class="row">
+                <div class="col-lg-12">
+                    País: <b>{{countrySelected[1]}}</b><br>
+                    Ciudad: <b>{{screenOne.controls['city'].value}}</b><br>
+                    Presupuesto COP (Pesos Colombianos): <b>{{screenOne.controls['budget'].value | currency}}</b><br>
+                    Clima: <b>{{weather?.current?.feelslike_c}} °C</b><br>
+                    Moneda local: <b></b><br>
+                    Cambio presupuesto: <b></b><br>
+                    Tasa de cambio: <b></b>
+                </div>
+            </div>
+        </div>
+    }
+</div>
